@@ -1,10 +1,10 @@
 import language
-from language import move_left, move_right, loop_start, loop_end, increment, decrement, go_home, goto, replace, output, address, new_line
+from language import move_left, move_right, loop_start, loop_end, increment, decrement, go_home, goto, output, address, new_line, add, sub, multiply, divide, get_a, get_c, get_b, store_a, store_b, store_c
 
 fib = "^ab>^^^[_<A+b>]"
 with open("program.txt") as file:
     program = file.read()
-program = fib
+#program = fib
 # default commands
 # ^ - increment
 # _ - decrement
@@ -18,20 +18,27 @@ program = fib
 # % - memory pointer goto pointer value
 # $ - program pointer goto pointer value
 # ! - go home
-
-# new commands
+# & - set pointer to number
 # a - set a
 # b - set b
 # c - set c
 # A - get A
 # B - get B
 # C - get C
+# (value) - set pointer to value
 
-# math commands /Result goes in A and B is not safe trashes pointer and pointer +1
+# math commands /Result goes in A
 # + - adds reg A and B
 # - - subtracts A and B
 # * - multiplies A and B
 # / - divides A and B
+
+# new commands
+# { - push
+# } - pop
+
+
+
 
 # reserverd pointers
 # 0 - Address
@@ -39,12 +46,26 @@ program = fib
 # 2 - reg A
 # 3 - reg B
 # 4 - reg C
-# 5 - trash
+# 5 - ret store
+# 6 - stack pointer
+# 7 - trash
+# 8 - trash
+# 9 - trash
+# 10 - trash
+
+trash_location = 6
 prefix = ""
 comment = False
-#prefix = ">"*6
-program = "^ab>+[-<A+b>]"
+value = False
+stack_pos = 49
+
+prefix = ">"*6+"("+str(stack_pos)+")"+">"*4
+#program = "*"
 language.formated = False
+newLines = False
+
+def display():
+    language.display()
 
 def clear_pointer():
     loop_start()
@@ -53,229 +74,94 @@ def clear_pointer():
     loop_end()
     new_line()
 
-def clear_trash():
-    move_right(5)
+def set_value(value):
     clear_pointer()
-    move_left(5)
+    language.set_value(value)
 
-def store_a():
+def goto_ret():
     go_home()
-    move_right(2)
-    clear_pointer()
-    move_left()
-    goto()
-    loop_start()
-    new_line()
-    decrement()
     move_right()
-    increment()
-    move_left()
-    go_home()
-    move_right(2)
-    increment()
-    move_left()
-    goto()
-    loop_end()
-    new_line()
-    move_right()
-    loop_start()
-    new_line()
-    decrement()
-    move_left()
-    increment()
-    move_right()
-    loop_end()
-    new_line()
-    move_left()
 
-def store_b():
+def goto_trash():
     go_home()
-    move_right(3)
-    clear_pointer()
-    move_left(2)
-    goto()
-    loop_start()
-    new_line()
-    decrement()
-    move_right()
-    increment()
-    move_left()
+    move_right(trash_location)
+    
+def return_from_trash():
+    move_left(trash_location)
     go_home()
-    move_right(3)
-    increment()
-    move_left(2)
-    goto()
-    loop_end()
-    new_line()
-    move_right()
-    loop_start()
-    new_line()
-    decrement()
-    move_left()
-    increment()
-    move_right()
-    loop_end()
-    new_line()
-    move_left()
 
-def store_c():
+def store_ret():
     go_home()
+    move_right()
+    store_c()
     move_right(4)
-    clear_pointer()
-    move_left(3)
+    get_c()
+    move_left(4)
     goto()
-    loop_start()
-    new_line()
-    decrement()
-    move_right()
-    increment()
-    move_left()
+
+def restore_ret():
     go_home()
+    move_right()
+    store_b()
     move_right(4)
-    increment()
-    move_left(3)
-    goto()
-    loop_end()
-    new_line()
-    move_right()
-    loop_start()
-    new_line()
-    decrement()
-    move_left()
-    increment()
-    move_right()
-    loop_end()
-    new_line()
-    move_left()
-
-def get_a():
-    clear_pointer()
-    go_home()
-    clear_trash()
-    move_right(2)
-    loop_start()
-    new_line()
-    decrement()
-    move_right(3)
-    increment()
+    store_c()
+    get_b()
     move_left(4)
-    goto()
-    increment()
-    go_home()
-    move_right(2)
-    loop_end()
-    new_line()
-    move_right(3)
-    loop_start()
-    new_line()
-    decrement()
-    move_left(3)
-    increment()
-    move_right(3)
-    loop_end()
-    new_line()
-    move_left(4)
-    goto()
-
-def get_b():
-    clear_pointer()
-    go_home()
-    clear_trash()
-    move_right(3)
-    loop_start()
-    new_line()
-    decrement()
-    move_right(2)
-    increment()
-    move_left(4)
-    goto()
-    increment()
-    go_home()
-    move_right(3)
-    loop_end()
-    new_line()
-    move_right(2)
-    loop_start()
-    new_line()
-    decrement()
-    move_left(2)
-    increment()
-    move_right(2)
-    loop_end()
-    new_line()
-    move_left(4)
-    goto()
-
-def get_c():
-    clear_pointer()
-    go_home()
-    clear_trash()
+    get_c()
     move_right(4)
-    loop_start()
-    new_line()
-    decrement()
-    move_right()
-    increment()
-    move_left(4)
-    goto()
-    increment()
-    go_home()
-    move_right(4)
-    loop_end()
-    new_line()
-    move_right()
-    loop_start()
-    new_line()
-    decrement()
-    move_left()
-    increment()
-    move_right()
-    loop_end()
-    new_line()
-    move_left(4)
     goto()
 
-def add_noclear():
+def goto_stack():
     go_home()
-    move_right(3)
-    loop_start()
-    new_line()
-    decrement()
-    move_right(2)
-    increment()
+    move_right(6)
+    goto()
+
+def push():
+    store_ret()
+    store_c()
+    goto_stack()
+    get_c()
+    go_home()
+    move_right(6)
+    store_a()
     move_left(3)
-    increment()
-    move_right()
-    loop_end()
-    new_line()
-    move_right(2)
-    loop_start()
-    new_line()
-    decrement()
-    move_left(2)
-    increment()
-    move_right(2)
-    loop_end()
-    new_line()
-    move_left(4)
+    set_value(1)
+    sub()
+    move_right(3)
+    get_a()
+    goto_ret()
+    restore_ret()
     goto()
 
-def add():
+def pop():
+    store_ret()
+    goto_stack()
+    store_c()
     go_home()
-    clear_trash()
-    move_right()
+    move_right(6)
+    store_a()
+    move_left(3)
+    set_value(1)
+    add()
+    move_right(3)
+    get_a()
+    goto_ret()
+    restore_ret()
     goto()
-    add_noclear()
-
-
+    
 
 
 def encode(program):
-    global encoded, comment
+    global encoded, comment, value
     for char in program:
+        if char.isnumeric() and value:
+            language.append(char)
+            continue
         if comment:
             if (char == "\n"):
                 comment = False
+            else:
+                language.text(char)
             continue
         match char:
             case "<":
@@ -314,13 +200,31 @@ def encode(program):
                 get_c()
             case "+":
                 add()
+            case "-":
+                sub()
+            case "*":
+                multiply()
+            case "/":
+                divide()
+            case "{":
+                push()
+            case "}":
+                pop()
+            case "(":
+                value = True
+                language.append("(")
+                continue
+            case ")":
+                value = False
+                language.append(")")
+                continue
             case "#":
                 comment = True
                 continue
             case " ":
                 continue
-        language.new_line()
-        language.new_line()
+        language.new_line(newLines)
+        language.new_line(newLines)
     return prefix+language.encoded
 
 

@@ -1,12 +1,12 @@
 import interpret, main
-size = 20
+size = 50
 
-program = "^a>^^^^[_<A.+b>]"
-#program = "^^_"
+program = "(4){"
+main.language.formated = False
 compiled = main.encode(program)
-
 print(compiled)
 interpreter = interpret.Intepreter(size)
-interpreter.debug = False
+interpreter.debug = True
 interpreter.run(compiled)
+
 print(interpreter.memory_pointer, interpreter.program_pointer, interpreter.skipping, interpreter.loops, interpreter.memory)

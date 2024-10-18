@@ -1,59 +1,91 @@
 encoded = ""
 formated = False
 tab_count = 0
-def new_line():
+def append(text):
     global encoded
-    if formated: encoded += "\n" + "\t"*tab_count
+    encoded += text
+
+def new_line(forced=False):
+    global encoded
+    if formated or forced: append("\n" + "\t"*tab_count)
 
 def move_left(times = 1):
-    global encoded
-    encoded += "<" * times
+    append("<" * times)
 
 def move_right(times = 1):
-    global encoded
-    encoded += ">" * times
+    append(">" * times)
 
 def increment():
-    global encoded
-    encoded += "^"
+    append("^")
 
 def decrement():
-    global encoded
-    encoded += "_"
+    append("_")
 
 def output():
-    global encoded
-    encoded += "."
+    append(".")
 
 def loop_start():
-    global encoded,tab_count
+    global tab_count
     new_line()
-    encoded += "["
+    append("[")
     tab_count+=1
 
 def loop_end():
-    global encoded,tab_count
+    global tab_count
     tab_count-=1
     new_line()
-    encoded += "]"
+    append("]")
 
 def address():
-    global encoded
-    encoded += "@"
+    append("@")
 
 def program_address():
-    global encoded
-    encoded += "?"
+    append("?")
 
 def goto():
-    global encoded
-    encoded += "%"
+    append("%")
 
 def goto_program():
-    global encoded
-    encoded += "$"
-
+    append("$")
 
 def go_home():
-    global encoded
-    encoded += "!"
+    append("!")
+
+def display():
+    append("d")
+
+def add():
+    append("+")
+
+def sub():
+    append("-")
+
+def multiply():
+    append("*")
+
+def divide():
+    append("/")
+
+def store_a():
+    append("a")
+
+def get_a():
+    append("A")
+
+def store_b():
+    append("B")
+
+def get_b():
+    append("B")
+
+def store_c():
+    append("c")
+
+def get_c():
+    append("C")
+
+def set_value(value):
+    append("("+str(value)+")")
+
+def text(text):
+    if formated: append(text)
