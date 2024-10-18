@@ -73,7 +73,7 @@ def get_a():
     append("A")
 
 def store_b():
-    append("B")
+    append("b")
 
 def get_b():
     append("B")

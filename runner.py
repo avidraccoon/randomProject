@@ -1,7 +1,7 @@
 import interpret, main
-size = 50
+size = 25
 
-program = "(4){"
+program = "^{(4){(0)>}."
 main.language.formated = False
 compiled = main.encode(program)
 print(compiled)

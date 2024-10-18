@@ -57,7 +57,7 @@ trash_location = 6
 prefix = ""
 comment = False
 value = False
-stack_pos = 49
+stack_pos = 24
 
 prefix = ">"*6+"("+str(stack_pos)+")"+">"*4
 #program = "*"
@@ -135,8 +135,6 @@ def push():
 
 def pop():
     store_ret()
-    goto_stack()
-    store_c()
     go_home()
     move_right(6)
     store_a()
@@ -145,9 +143,12 @@ def pop():
     add()
     move_right(3)
     get_a()
+    goto_stack()
+    store_a()
     goto_ret()
     restore_ret()
     goto()
+    get_a()
     
 
 
