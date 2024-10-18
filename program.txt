@@ -1,0 +1,4 @@
+^ #Increases value at pointer
+a #Sets A to pointer value
+> #Moves pointer right
+A #Sets pointer value to A
