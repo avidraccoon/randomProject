@@ -89,3 +89,9 @@ def set_value(value):
 
 def text(text):
     if formated: append(text)
+
+def label():
+    append("|")
+
+def goto_label():
+    append("~")

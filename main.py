@@ -1,5 +1,5 @@
 import language
-from language import move_left, move_right, loop_start, loop_end, increment, decrement, go_home, goto, output, address, new_line, add, sub, multiply, divide, get_a, get_c, get_b, store_a, store_b, store_c
+from language import move_left, move_right, loop_start, loop_end, increment, decrement, go_home, goto, output, address, new_line, add, sub, multiply, divide, get_a, get_c, get_b, store_a, store_b, store_c, goto_program, label, goto_label, program_address
 
 fib = "^ab>^^^[_<A+b>]"
 with open("program.txt") as file:
@@ -18,7 +18,7 @@ with open("program.txt") as file:
 # % - memory pointer goto pointer value
 # $ - program pointer goto pointer value
 # ! - go home
-# & - set pointer to number
+# & - call
 # a - set a
 # b - set b
 # c - set c
@@ -26,6 +26,8 @@ with open("program.txt") as file:
 # B - get B
 # C - get C
 # (value) - set pointer to value
+# | - create label
+# ~ - goto label
 
 # math commands /Result goes in A
 # + - adds reg A and B
@@ -36,6 +38,7 @@ with open("program.txt") as file:
 # new commands
 # { - push
 # } - pop
+# & - call
 
 
 
@@ -150,7 +153,12 @@ def pop():
     goto()
     get_a()
     
-
+def call():
+    store_b()
+    program_address()
+    push()
+    get_b()
+    goto_label()
 
 def encode(program):
     global encoded, comment, value
@@ -167,10 +175,10 @@ def encode(program):
         match char:
             case "<":
                 move_left()
-                move_left()
+                #move_left()
             case ">":
                 move_right()
-                move_right()
+                #move_right()
             case "^":
                 increment()
             case "_":
@@ -211,6 +219,12 @@ def encode(program):
                 push()
             case "}":
                 pop()
+            case "&":
+                call()
+            case "|":
+                label()
+            case "~":
+                goto_label()
             case "(":
                 value = True
                 language.append("(")

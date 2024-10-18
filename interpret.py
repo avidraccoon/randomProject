@@ -9,6 +9,15 @@ class Intepreter:
         self.skipping = 0
         self.instructions = 0
         self.debug = False
+        self.labels = []
+
+    def label(self):
+        self.labels.push(self.memory_pointer)
+
+    def goto_label(self):
+        if self.get_memory() < 0 or self.get_memory() > len(self.labels):
+            pass
+        self.program_pointer = self.labels[self.get_memory()]
 
     def get_memory(self):
         return self.memory[self.memory_pointer]
@@ -133,6 +142,8 @@ class Intepreter:
                     case "B": self.get_b()
                     case "C": self.get_c()
                     case "(": self.value()
+                    case "|": self.label()
+                    case "~": self.goto_label()
             if char == "d":
                 #self.display()
                 pass
