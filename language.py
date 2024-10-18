@@ -15,11 +15,11 @@ def move_right(times = 1):
 
 def increment():
     global encoded
-    encoded += "+"
+    encoded += "^"
 
 def decrement():
     global encoded
-    encoded += "-"
+    encoded += "_"
 
 def output():
     global encoded
