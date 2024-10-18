@@ -1,7 +1,7 @@
 import interpret, main
 size = 20
 
-program = "^ab>^^^^[_<A.+b>]"
+program = "^a>^^^^[_<A.+b>]"
 #program = "^^_"
 compiled = main.encode(program)
 

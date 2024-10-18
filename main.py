@@ -17,7 +17,6 @@ program = fib
 # ? - set pointer to program address
 # % - memory pointer goto pointer value
 # $ - program pointer goto pointer value
-#---# & - use pointer value for next operation
 # ! - go home
 
 # new commands
@@ -299,8 +298,6 @@ def encode(program):
                 address()
             case "$":
                 goto()
-            case "&":
-                replace()
             case "!":
                 go_home()
             case "a":

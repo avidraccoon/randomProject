@@ -53,9 +53,6 @@ def goto_program():
     global encoded
     encoded += "$"
 
-def replace():
-    global encoded
-    encoded += "&"
 
 def go_home():
     global encoded
