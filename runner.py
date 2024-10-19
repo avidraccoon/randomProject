@@ -1,7 +1,7 @@
 import interpret, main
 size = 25
 
-program = "^{(4){(0)>}."
+program = open("program.txt").read()
 main.language.formated = False
 compiled = main.encode(program)
 print(compiled)

@@ -18,7 +18,6 @@ with open("program.txt") as file:
 # % - memory pointer goto pointer value
 # $ - program pointer goto pointer value
 # ! - go home
-# & - call
 # a - set a
 # b - set b
 # c - set c
@@ -28,6 +27,10 @@ with open("program.txt") as file:
 # (value) - set pointer to value
 # | - create label
 # ~ - goto label
+# : - name function
+# = - variable
+# " - name
+# ` - function position
 
 # math commands /Result goes in A
 # + - adds reg A and B
@@ -38,13 +41,11 @@ with open("program.txt") as file:
 # new commands
 # { - push
 # } - pop
-# & - call
-
 
 
 
 # reserverd pointers
-# 0 - Address
+# 0 - Home
 # 1 - home ret
 # 2 - reg A
 # 3 - reg B
@@ -56,7 +57,7 @@ with open("program.txt") as file:
 # 9 - trash
 # 10 - trash
 
-trash_location = 6
+trash_location = 7
 prefix = ""
 comment = False
 value = False
@@ -153,16 +154,17 @@ def pop():
     goto()
     get_a()
     
-def call():
-    store_b()
-    program_address()
-    push()
-    get_b()
-    goto_label()
 
+
+isstring = False
 def encode(program):
-    global encoded, comment, value
+    global encoded, comment, value, isstring
     for char in program:
+        if isstring:
+            if char == "\"":
+                isstring = False
+            language.append(char)
+            continue
         if char.isnumeric() and value:
             language.append(char)
             continue
@@ -191,8 +193,10 @@ def encode(program):
                 output()
             case "@":
                 address()
-            case "$":
+            case "%":
                 goto()
+            case "$":
+                goto_program()
             case "!":
                 go_home()
             case "a":
@@ -219,12 +223,14 @@ def encode(program):
                 push()
             case "}":
                 pop()
-            case "&":
-                call()
             case "|":
                 label()
             case "~":
                 goto_label()
+            case ":":
+                language.append(":")
+            case "=":
+                language.append("=")
             case "(":
                 value = True
                 language.append("(")
@@ -236,8 +242,18 @@ def encode(program):
             case "#":
                 comment = True
                 continue
+            case "`":
+                language.append("`")
+            case "\"":
+                isstring = True
+                language.append("\"")
+                continue
             case " ":
                 continue
+            case "?":
+                program_address()
+            case ";":
+                language.append(";")
         language.new_line(newLines)
         language.new_line(newLines)
     return prefix+language.encoded
