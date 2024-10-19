@@ -1,12 +1,21 @@
 "return":|
-    !(5)%$
+    !(7)%$
+;
+
+;"macro_return":|
+    !(7)%c>bC<B>$
+;
+
+"print":|
+    }.
+    "macro_return"`$
 ;
 
 (54321)="random"
 
 "main":|
-    "random".
+    "random"{
+    "print"~
     "return"`$
 ;
-
 "main"~

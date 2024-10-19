@@ -52,12 +52,15 @@ with open("program.txt") as file:
 # 4 - reg C
 # 5 - ret store
 # 6 - stack pointer
-# 7 - trash
-# 8 - trash
+# 7 - func ret
+# 8 - func ret 2
 # 9 - trash
 # 10 - trash
 
-trash_location = 7
+
+# 11 - trash
+
+trash_location = 9
 prefix = ""
 comment = False
 value = False
@@ -199,6 +202,8 @@ def encode(program):
                 goto_program()
             case "!":
                 go_home()
+            case "d":
+                language.append("d")
             case "a":
                 store_a()
             case "b":

@@ -51,7 +51,8 @@ class Intepreter:
         self.name = ""
 
     def goto_label(self):
-        self.memory[5] = self.program_pointer
+        self.memory[8] = self.memory[7] 
+        self.memory[7] = self.program_pointer
         self.program_pointer = self.get_memory()
 
     def get_memory(self):
