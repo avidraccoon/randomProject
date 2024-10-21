@@ -2,7 +2,11 @@
 #include <stdio.h>
 #include "memory.h"
 
+
+
 int main(){
+    //TODO fix free space detection
+    //TODO Test with multiple memory blocks
     struct MemoryBlock block = createMemoryBlock(20);
     prepareMemoryBlock(block);
     memblocks = block;
