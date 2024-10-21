@@ -5,7 +5,6 @@
 
 
 int main(){
-    //TODO fix free space detection
     //TODO Test with multiple memory blocks
     struct MemoryBlock block = createMemoryBlock(20);
     prepareMemoryBlock(block);
