@@ -6,11 +6,12 @@ int main(){
     struct MemoryBlock block = createMemoryBlock(20);
     prepareMemoryBlock(block);
     memblocks = block;
-    int address = allocateMemory(5);
-    int address2 = allocateMemory(5);
-    printf("%d %d\n", address, address2);
-    //freeMemory(address);
-    //allocateMemory(2);
+    allocateMemory(1);
+    allocateMemory(1);
+    allocateMemory(1);
+    freeMemory(3);
+    freeMemory(11);
+    freeMemory(7);
     printMemory();
     return 1;
 }

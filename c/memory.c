@@ -121,8 +121,8 @@ void mergeChunkNext(struct MemoryBlock block, struct Chunk chunk, int address){
     struct Chunk nextChunk = getChunk(block, address+chunk.size+3);
     if (nextChunk.free){
         int nextAddress = address+chunk.size+3-block.address;
-        block.memory[address-block.address] = (chunk.size + nextChunk.size);
-        block.memory[nextAddress+2] = address;
+        block.memory[address-block.address] = (chunk.size + nextChunk.size+3);
+        block.memory[nextAddress+nextChunk.size+3+2] = address;
     }
 }
 
@@ -130,7 +130,7 @@ int mergeChunkPrev(struct MemoryBlock block, struct Chunk chunk, int address){
     struct Chunk prevChunk = getChunk(block, chunk.prev);
     if (prevChunk.free){
         int prevAddress = chunk.prev-block.address;
-        block.memory[prevAddress] = chunk.size + prevChunk.size;
+        block.memory[prevAddress] = chunk.size + prevChunk.size+3;
         return chunk.prev;
     }
     return address;
@@ -139,9 +139,8 @@ int mergeChunkPrev(struct MemoryBlock block, struct Chunk chunk, int address){
 
 void freeChunk(struct MemoryBlock block, struct Chunk chunk, int address){
     block.memory[address-block.address] = chunk.size;
-    //mergeChunkNext(block, chunk, address);
-    //int chunkAddress = mergeChunkPrev(block, chunk, address);
-    int chunkAddress = address;
+    mergeChunkNext(block, chunk, address);
+    int chunkAddress = mergeChunkPrev(block, chunk, address);
     int previous = block.address;
     int curAddress = block.address;
     struct Chunk curChunk = getChunk(block, block.address);
@@ -151,6 +150,9 @@ void freeChunk(struct MemoryBlock block, struct Chunk chunk, int address){
         curAddress = nextChunk.next;
         curChunk = nextChunk;
         nextChunk = getChunk(block, curAddress+curChunk.size);
+        if (previous = curAddress){
+            break;
+        }
     }
     if (previous>=0){
         block.memory[previous-block.address+1] = chunkAddress;
