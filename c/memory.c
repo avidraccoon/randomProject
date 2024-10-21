@@ -8,7 +8,7 @@ struct MemoryBlock createMemoryBlock(int size){
     block.size = size;
     block.free = size;
     block.address = 0;
-    block.memory = (int *)malloc(size * sizeof(int));
+    block.memory = (int *) malloc (size * sizeof(int));
     block.hasNext = false;
     return block;
 }
@@ -30,8 +30,7 @@ struct MemoryBlock getBlock(int address){
 
 struct Chunk getChunk(struct MemoryBlock block, int address){
     struct Chunk chunk;
-    int size = block.memory[address-block.address];
-    chunk.free = (size >= 0);
+    chunk.free = (block.memory[address-block.address] >= 0);
     chunk.size = abs(block.memory[address-block.address]);
     chunk.next = block.memory[address+1-block.address];
     chunk.prev = block.memory[address+2-block.address];
@@ -39,12 +38,10 @@ struct Chunk getChunk(struct MemoryBlock block, int address){
 }
 
 void prepareMemoryBlock(struct MemoryBlock block){
-    int size = block.size;
-    if (size<3){
+    if (block.size<3){
         printf("To little memory to prepare block\n");
     }
-    int chunkSize = size - 3;
-    block.memory[0] = chunkSize;
+    block.memory[0] = block.size - 3;
     block.memory[1] = -1;
     block.memory[2] = -1;
 }
@@ -61,23 +58,18 @@ void handleAllocateChunk(struct MemoryBlock block, int address, int size, int pr
     block.memory[address] = -size;
     if (remainingSpace > 2){
         int newAddress = address+3+size;
-        int chunkSize = remainingSpace - 3;
-        block.memory[newAddress-block.address] = chunkSize;
+        block.memory[newAddress-block.address] = remainingSpace - 3;
         block.memory[newAddress+1-block.address] = chunk.next;
         block.memory[newAddress+2-block.address] = address;
         if (chunk.prev >= 0){
             block.memory[chunk.prev+1-block.address] = newAddress;
         }
-        if (previous >= 0){
-            block.memory[previous+1-block.address] = newAddress;
-        }
+        block.memory[previous+1-block.address] = newAddress;
     }else{
         if (chunk.prev >= 0){
             block.memory[chunk.prev+1-block.address] = chunk.next;
         }
-        if (previous >= 0){
-            block.memory[previous+1-block.address] = chunk.next;
-        }
+        block.memory[previous+1-block.address] = chunk.next;
     }
 }
 
@@ -130,8 +122,7 @@ void mergeChunkNext(struct MemoryBlock block, struct Chunk chunk, int address){
 int mergeChunkPrev(struct MemoryBlock block, struct Chunk chunk, int address){
     struct Chunk prevChunk = getChunk(block, chunk.prev);
     if (prevChunk.free){
-        int prevAddress = chunk.prev-block.address;
-        block.memory[prevAddress] = chunk.size + prevChunk.size+3;
+        block.memory[chunk.prev-block.address] = chunk.size + prevChunk.size+3;
         return chunk.prev;
     }
     return address;
@@ -169,6 +160,16 @@ void freeMemory(int chunkAddress){
     struct Chunk chunk = getChunk(block, chunkAddress-3);
     freeChunk(block, chunk, chunkAddress-3);
 }
+
+
+
+
+
+
+
+
+
+
 
 void printMemory(){
     char mem[memblocks.size+1];
